@@ -6,12 +6,32 @@
 #include <vector>
 #include "lied.h"
 #include "DynArray.h"
+#include "BubbleSort.h"
 
 
 using namespace std;
 
 
 
+
+void fill (DynArray& data) {
+    for (int i = 0; i < 10; i++) {
+        data.push_back(lied());
+        data.at(i).erscheinungsjahr = i;
+    }
+    cout << data.size() << endl;
+    cout << data.capacity() << endl;
+    data.at(0).titel = "Was";
+    data.at(1).titel = "ist";
+    data.at(2).titel = "die";
+    data.at(3).titel = "alphabetische";
+    data.at(4).titel = "ordnung";
+    data.at(5).titel = "für";
+    data.at(6).titel = "diese";
+    data.at(7).titel = "wörter";
+    data.at(8).titel = "krautsalat";
+    data.at(9).titel = "geht";
+}
 
 
 lied eintragneu() {
@@ -78,8 +98,31 @@ void eintragbearbeiten(DynArray& v) {
     }
 }
 
-int eintragsuchen() {
+int eintragsuchen(const DynArray& v) {
+    string eingabe;
+    string sk;
     cout << "Einen Eintrag suchen." << endl;
+    cout << "Bitte geben sie den Namen des zu suchenden Lieds ein" << endl;
+    cin >> eingabe;
+    sk = lowerCase(eingabe);
+    int start = 0;
+    int mitte = (v.size()/2);
+    int ende = v.size();
+    while (ende != start) {
+        if (lowerCase(v.at(mitte).getTitle()) == sk) {
+            v.at(mitte).print();
+            return 0;
+        } 
+        else if (sk < lowerCase(v.at(mitte).getTitle())) {
+            ende = mitte;
+            mitte = (ende-start)/2 + start;
+        }
+        else {
+            start = mitte + 1;
+            mitte = (ende-start)/2 + start;
+        }      
+    }
+    cout << "Es wurde kein Lied mit diesem Titel gefunden" << endl;
     return 0;
 }
 
@@ -92,6 +135,7 @@ int menu() {
     DynArray daten;
     int auswahl = 0;
     while (true) {
+        bubblesort(daten);
         cout << "*********** Musikbibliothek Version 0.3**********" << endl;
         cout << "Hauptmenue:" << endl;
         cout << "1. (N)euen Eintrag anlegen" << endl;
@@ -107,6 +151,7 @@ int menu() {
             case 'n':
             case 'N': cout << "Neuen Eintrag anlegen." << endl;
                 daten.push_back(eintragneu());
+                bubblesort(daten);
                 break;
             case '2':
             case 'd':
@@ -124,7 +169,7 @@ int menu() {
                 break;
             case '5':
             case 'S':
-            case 's': eintragsuchen();
+            case 's': eintragsuchen(daten);
                 break;
             case '6':
             case 'a':
@@ -133,11 +178,15 @@ int menu() {
                 break;
             case '0': return 0;
                 break;
+            case '9': fill (daten);
+                break;
             default: cout << "Ungültige Eingabe." << endl;
         }
     }
     return 0;
 }
+
+
 
 int main() {
     menu();

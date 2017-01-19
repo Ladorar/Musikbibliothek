@@ -27,6 +27,7 @@ public:
     lied(std::string t, std::string i, int e, int l, enum lied::stil st);
 
     void print() const;
+    std::string getTitle ();
 };
 
 #endif	/* LIED_H */

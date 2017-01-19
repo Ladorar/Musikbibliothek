@@ -2,6 +2,7 @@
 
 #include "lied.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -22,4 +23,8 @@ void lied::print () const {
         cout << "Erscheinungsjahr: " << erscheinungsjahr << endl;
         cout << "Länge: " << laenge << endl;
         cout << "Genre: " << genre << endl;
+}
+
+std::string lied::getTitle () {
+    return titel;
 }
